@@ -9,6 +9,10 @@
   --color-cream: #f5f0e8;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: #1a3329;
   color: white;

@@ -1,33 +1,43 @@
 "use client";
 
-import { plots } from "@/data/dummy";
+import Image from "next/image";
+import Link from "next/link";
+import { plots, project } from "@/data/dummy";
 import { use } from "react";
 
 export default function PlotDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const plot = plots.find((p) => p.id === id);
+  const enquiryUrl = plot
+    ? `https://wa.me/${project.whatsapp}?text=${encodeURIComponent(
+        `Hi, I'm interested in ${plot.title} (${plot.area}, ${plot.price}) at ${project.name}. Please share more details.`
+      )}`
+    : "";
 
   if (!plot) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
         <h1 className="text-3xl font-bold mb-4">Plot not found</h1>
-        <a href="/" className="text-gold hover:underline">Back to plots</a>
+        <Link href="/" className="text-gold hover:underline">Back to plots</Link>
       </div>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <a href="/" className="text-gold text-sm hover:underline mb-6 inline-block">
+      <Link href="/" className="text-gold text-sm hover:underline mb-6 inline-block">
         ← Back to all plots
-      </a>
+      </Link>
 
       {/* Hero Image */}
-      <div className="rounded-2xl overflow-hidden mb-6 relative">
-        <img
+      <div className="rounded-2xl overflow-hidden mb-6 relative h-64 md:h-80">
+        <Image
           src={plot.image}
           alt={plot.title}
-          className="w-full h-80 object-cover"
+          fill
+          preload
+          sizes="(max-width: 896px) 100vw, 896px"
+          className="object-cover"
         />
         <div className="absolute top-4 right-4">
           <span
@@ -85,10 +95,13 @@ export default function PlotDetail({ params }: { params: Promise<{ id: string }>
             <div>
               <h3 className="font-semibold mb-3">Brochure</h3>
               <a href={plot.brochure} target="_blank" rel="noopener noreferrer">
-                <img
+                <Image
                   src={plot.brochure}
                   alt={`${plot.title} brochure`}
-                  className="rounded-xl w-full max-w-sm border border-white/5"
+                  width={843}
+                  height={1264}
+                  sizes="(max-width: 640px) 100vw, 384px"
+                  className="rounded-xl w-full max-w-sm h-auto border border-white/5"
                 />
               </a>
             </div>
@@ -119,17 +132,22 @@ export default function PlotDetail({ params }: { params: Promise<{ id: string }>
           <div className="bg-forest-light rounded-2xl p-6 border border-white/5 sticky top-20">
             <h3 className="font-bold text-lg mb-2">Interested?</h3>
             <p className="text-white/50 text-sm mb-6">
-              Tap below to enquire instantly on WhatsApp. Our bot will respond in under 2 minutes.
+              Message us on WhatsApp or call directly to book a site visit.
             </p>
             <a
-              href="/capture"
-              className="block w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 rounded-xl text-center transition-colors"
+              href={enquiryUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center min-h-[48px] w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl transition-colors"
             >
               💬 Enquire on WhatsApp
             </a>
-            <p className="text-white/30 text-xs text-center mt-3">
-              Avg. response time: 1.8 min
-            </p>
+            <a
+              href={`tel:${project.phones[0]}`}
+              className="flex items-center justify-center min-h-[48px] w-full mt-3 border border-gold/40 text-gold font-bold rounded-xl hover:bg-gold/10 transition-colors"
+            >
+              📞 {project.phones[0]}
+            </a>
 
             <div className="mt-6 pt-6 border-t border-white/10">
               <p className="text-white/40 text-xs mb-2">Also interested in</p>
@@ -137,14 +155,14 @@ export default function PlotDetail({ params }: { params: Promise<{ id: string }>
                 .filter((p) => p.id !== plot.id)
                 .slice(0, 2)
                 .map((p) => (
-                  <a
+                  <Link
                     key={p.id}
                     href={`/plot/${p.id}`}
                     className="block bg-white/5 rounded-lg p-3 mb-2 hover:bg-white/10 transition-colors"
                   >
                     <p className="text-sm font-semibold">{p.title}</p>
                     <p className="text-gold text-xs">{p.price} · {p.area}</p>
-                  </a>
+                  </Link>
                 ))}
             </div>
           </div>
