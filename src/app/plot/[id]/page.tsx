@@ -81,6 +81,19 @@ export default function PlotDetail({ params }: { params: Promise<{ id: string }>
             </div>
           </div>
 
+          {plot.brochure && (
+            <div>
+              <h3 className="font-semibold mb-3">Brochure</h3>
+              <a href={plot.brochure} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={plot.brochure}
+                  alt={`${plot.title} brochure`}
+                  className="rounded-xl w-full max-w-sm border border-white/5"
+                />
+              </a>
+            </div>
+          )}
+
           {/* Dummy Map */}
           <div>
             <h3 className="font-semibold mb-3">Location</h3>

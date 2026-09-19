@@ -6,6 +6,7 @@ export interface Plot {
   price: string;
   pricePerSqft: string;
   image: string;
+  brochure?: string;
   mapUrl: string;
   highlights: string[];
   status: "available" | "reserved" | "sold";
@@ -93,6 +94,26 @@ export const plots: Plot[] = [
     image: "https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?w=800&h=500&fit=crop",
     mapUrl: "https://maps.google.com/?q=12.7159,77.2810",
     highlights: ["Best for investment", "Near NICE road", "DC conversion", "Rapid appreciation area"],
+    status: "available",
+  },
+  {
+    id: "plot-005",
+    title: "Residential Plot - Koregaon Bhima",
+    location: "Vadagaon Phata, Koregaon Bhima, Taluka Shirur, Pune 412216",
+    area: "2,000 sq ft",
+    price: "₹14,99,999",
+    pricePerSqft: "₹750/sq ft",
+    image: "/koregaon-bhima-site.jpeg",
+    brochure: "/koregaon-bhima-flyer.jpeg",
+    mapUrl: "https://maps.google.com/?q=Koregaon+Bhima,+Shirur,+Pune,+412216",
+    highlights: [
+      "2 min from highway",
+      "School nearby",
+      "Hospital nearby",
+      "Sewage line",
+      "24/7 electricity",
+      "24/7 water",
+    ],
     status: "available",
   },
 ];
