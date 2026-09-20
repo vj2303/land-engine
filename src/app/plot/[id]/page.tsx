@@ -1,27 +1,58 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { plots, project } from "@/data/dummy";
-import { use } from "react";
+import { notFound } from "next/navigation";
+import { plots, project } from "@/data/properties";
 
-export default function PlotDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+type Params = { params: Promise<{ id: string }> };
+
+// Pre-render every plot page at build time
+export function generateStaticParams() {
+  return plots.map((plot) => ({ id: plot.id }));
+}
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { id } = await params;
   const plot = plots.find((p) => p.id === id);
-  const enquiryUrl = plot
-    ? `https://wa.me/${project.whatsapp}?text=${encodeURIComponent(
-        `Hi, I'm interested in ${plot.title} (${plot.area}, ${plot.price}) at ${project.name}. Please share more details.`
-      )}`
-    : "";
 
   if (!plot) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-bold mb-4">Plot not found</h1>
-        <Link href="/" className="text-gold hover:underline">Back to plots</Link>
-      </div>
-    );
+    return { title: "Plot not found — Land Leads" };
   }
+
+  const title = `${plot.title} at ${project.name} — ${plot.price}`;
+  const description = `${plot.area} residential plot at ${project.address}. ${plot.highlights.join(", ")}.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/plot/${plot.id}` },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url: `/plot/${plot.id}`,
+      images: [{ url: plot.image, alt: plot.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [plot.image],
+    },
+  };
+}
+
+export default async function PlotDetail({ params }: Params) {
+  const { id } = await params;
+  const plot = plots.find((p) => p.id === id);
+
+  if (!plot) {
+    notFound();
+  }
+
+  const enquiryUrl = `https://wa.me/${project.whatsapp}?text=${encodeURIComponent(
+    `Hi, I'm interested in ${plot.title} (${plot.area}, ${plot.price}) at ${project.name}. Please share more details.`
+  )}`;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">

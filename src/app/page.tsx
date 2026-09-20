@@ -2,11 +2,13 @@ import Hero from "@/components/Hero";
 import PlotCard from "@/components/PlotCard";
 import Amenities from "@/components/Amenities";
 import LocationMap from "@/components/LocationMap";
-import { plots, project } from "@/data/dummy";
+import StructuredData from "@/components/StructuredData";
+import { plots, project } from "@/data/properties";
 
 export default function HomePage() {
   return (
     <>
+      <StructuredData />
       <Hero />
 
       <section id="properties" className="px-4 py-14 md:py-20 scroll-mt-20">

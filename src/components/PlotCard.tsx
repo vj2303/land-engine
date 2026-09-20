@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { project, type Plot } from "@/data/dummy";
+import { project, type Plot } from "@/data/properties";
 
 const STATUS_STYLES: Record<Plot["status"], string> = {
   available: "bg-green-500/90 text-white",

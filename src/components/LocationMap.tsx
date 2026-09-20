@@ -1,4 +1,4 @@
-import { project } from "@/data/dummy";
+import { project } from "@/data/properties";
 
 export default function LocationMap() {
   return (

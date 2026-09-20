@@ -1,4 +1,4 @@
-import { amenities } from "@/data/dummy";
+import { amenities } from "@/data/properties";
 
 const ICON_PATHS: Record<string, React.ReactNode> = {
   hospital: (
